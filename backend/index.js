@@ -7,6 +7,10 @@ connectoMongodb();
 const app = express()
 const port = 3000
 
+// AVAILABLE ROUTES
+app.use('/api/authorization', require('./routes/authorization'))
+app.use('/api/notes', require('./routes/notes'))
+
 app.get('/', (req, res) => {
   res.send('Hello Eidan!')
 })
