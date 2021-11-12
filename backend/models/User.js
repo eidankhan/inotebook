@@ -20,5 +20,5 @@ const userSchema = new mongoose.Schema({
   },
 });
 const User =  mongoose.model('user',userSchema);
-User.createIndexes();
+// User.createIndexes(); // Creates index for all unique columns
 module.exports = User;
