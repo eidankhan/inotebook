@@ -6,9 +6,10 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = "ekhan"
+
 // Endpoint to save data of a new user
 router.post(
-    '/', 
+    '/createUser', 
     [
         check('name', 'Name should be at least 3 characters long').isLength({min: 3}),
         check('email', 'Enter a valid email').isEmail(),
@@ -47,5 +48,45 @@ router.post(
         response.status(500).json(error)
     }
 })
+
+// User Authentication end point
+router.post('/login',
+    [  
+        check('email', 'Please enter a valid email').isEmail(),
+        check('password', 'Password cant be blank').exists()
+    ],
+    async (request, response) => {
+        // If there are errors
+        const erros = validationResult(request)
+        if(!erros.isEmpty()){
+            return response.status(400).json({erros: erros.array()})
+        }
+
+        const {email, password} = request.body;
+        // Check whether user exists or not
+        try {
+            let user = await User.findOne({email})
+            if(!user){
+                console.log('User doesnt exist')
+                return response.status(500).json({message: "Please, login with correct credentials"})
+            }
+            const passwordValidation = await bcrypt.compare(password, user.password)
+            if(!passwordValidation){
+                console.log('password mismatch')
+                return response.status(500).json({message: "Please, login with correct credentials"})
+            }
+            const data = {
+                user:{
+                    id: user.id,
+                }
+            }
+            const authToken = jwt.sign(data, JWT_SECRET)
+            response.json({authToken});
+        } catch (error) {  
+            console.log("error:"+error.message);
+            response.status(500).send('Internal server error')
+        }
+    }
+)
 
 module.exports = router;

@@ -10,7 +10,7 @@ const port = 3000
 app.use(express.json())
 
 // AVAILABLE ROUTES
-app.use('/api/auth/createUser', require('./routes/authorization'))
+app.use('/api/auth', require('./routes/authorization'))
 app.use('/api/notes', require('./routes/notes'))
 
 
