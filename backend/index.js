@@ -7,6 +7,8 @@ connectoMongodb();
 const app = express()
 const port = 3000
 
+app.use(express.json())
+
 // AVAILABLE ROUTES
 app.use('/api/authorization', require('./routes/authorization'))
 app.use('/api/notes', require('./routes/notes'))
