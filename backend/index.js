@@ -13,9 +13,7 @@ app.use(express.json())
 app.use('/api/auth/createUser', require('./routes/authorization'))
 app.use('/api/notes', require('./routes/notes'))
 
-app.get('/', (req, res) => {
-  res.send('Hello Eidan!')
-})
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
