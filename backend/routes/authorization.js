@@ -4,6 +4,7 @@ const User = require('../models/User')
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
+const fetchUserDetails = require('../middleware/fetchUserDetails');
 
 const JWT_SECRET = "ekhan"
 
@@ -88,5 +89,18 @@ router.post('/login',
         }
     }
 )
+
+// Route 3: Decoding jwt to get user details
+
+router.post('/userdetails', fetchUserDetails, async (request, response) => {
+    try{
+        const userId = request.user.id
+        const user = await User.findById(userId).select('-password')
+        response.send(user)
+    }catch (error) {  
+        console.log("error:"+error.message);
+        response.status(500).send('Internal server error')
+    }
+})
 
 module.exports = router;
