@@ -2,8 +2,6 @@ const express = require("express");
 const fetchUserDetails = require("../middleware/fetchUserDetails");
 const Note = require("../models/Note");
 const { check, validationResult } = require("express-validator");
-const { route } = require("./authorization");
-const { response } = require("express");
 const router = express.Router();
 
 // Route 1: To fetch all the notes of currently logged in user
