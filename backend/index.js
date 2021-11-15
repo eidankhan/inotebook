@@ -2,12 +2,14 @@
 
 const connectoMongodb = require("./db");
 const express = require("express");
+var cors = require('cors')
 
 connectoMongodb();
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(cors())
 
 // AVAILABLE ROUTES
 app.use("/api/auth", require("./routes/authorization"));
