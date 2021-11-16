@@ -65,13 +65,16 @@ router.post(
     check("password", "Password cant be blank").exists(),
   ],
   async (request, response) => {
+    // Flag variable for success
+    let success = false;
     // If there are errors
     const erros = validationResult(request);
     if (!erros.isEmpty()) {
-      return response.status(400).json({ erros: erros.array() });
+      return response.status(400).json({ success: success, erros: erros.array() });
     }
 
     const { email, password } = request.body;
+    // console.log('Email:'+email+" Password:"+password)
     // Check whether user exists or not
     try {
       let user = await User.findOne({ email });
@@ -79,14 +82,14 @@ router.post(
         console.log("User doesnt exist");
         return response
           .status(500)
-          .json({ message: "Please, login with correct credentials" });
+          .json({ success: success, message: "Please, login with correct credentials" });
       }
       const passwordValidation = await bcrypt.compare(password, user.password);
       if (!passwordValidation) {
         console.log("password mismatch");
         return response
           .status(500)
-          .json({ message: "Please, login with correct credentials" });
+          .json({ success: success, message: "Please, login with correct credentials" });
       }
       const data = {
         user: {
@@ -94,10 +97,11 @@ router.post(
         },
       };
       const authToken = jwt.sign(data, JWT_SECRET);
-      response.json({ authToken });
+      success = true;
+      response.json({ success: success, authToken });
     } catch (error) {
       console.log("error:" + error.message);
-      response.status(500).send("Internal server error");
+      response.status(500).json({success: success, message:"Internal server error"});
     }
   }
 );
