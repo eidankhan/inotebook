@@ -45,8 +45,20 @@ export const AddNote = () => {
             onChange={onChange}
           />
         </div>
+        <div className="mb-3">
+          <label htmlFor="tag" className="form-label">
+            Tag
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="tag"
+            name="tag"
+            onChange={onChange}
+          />
+        </div>
         <button type="submit" className="btn btn-primary" onClick={handlOnClinck}>
-          Submit
+          Save Note
         </button>
       </form>
     </div>
