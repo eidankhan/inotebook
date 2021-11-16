@@ -21,10 +21,12 @@ router.post(
     ),
   ],
   async (request, response) => {
+    // Flag for success message
+    let success = false;
     // If there are errors
     const erros = validationResult(request);
     if (!erros.isEmpty()) {
-      return response.status(400).json({ erros: erros.array() });
+      return response.status(400).json({ success: success, erros: erros.array() });
     }
 
     // Check whether the user with this email already exists or not
@@ -33,7 +35,7 @@ router.post(
       if (user) {
         return response
           .status(500)
-          .json({ message: "Sorry, a user with this email already exists" });
+          .json({ success: success, message: "Sorry, a user with this email already exists" });
       }
       const salt = await bcrypt.genSalt(10);
       const secretPassword = await bcrypt.hash(request.body.password, salt);
@@ -48,11 +50,11 @@ router.post(
         },
       };
       const authToken = jwt.sign(data, JWT_SECRET);
-
-      response.json({ authToken });
+      success = true;
+      response.json({ success: success, authToken });
     } catch (error) {
       console.log("error:" + error);
-      response.status(500).json(error);
+      response.status(500).json({success: success, error:error});
     }
   }
 );
