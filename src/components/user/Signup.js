@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
-export const Signup = () => {
+export const Signup = (props) => {
+  const {showAlert} =  props;
   const navigate = useNavigate();
   const [user, setUser] = useState({ name: "", email: "", password: "" });
   const onChange = (e) => {
@@ -19,11 +20,12 @@ export const Signup = () => {
     });
     const data = await response.json();
     if(data.success){
-        localStorage.setItem("token","authToken")
+        localStorage.setItem("token",data.authToken)
+        showAlert("Your account has been created successfully", "success")
         navigate('/')
     }
     else{
-        alert('Invalid data')
+        showAlert("Error occured while creating account", "danger")
     }
   };
 

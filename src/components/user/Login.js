@@ -24,8 +24,8 @@ export const Login = (props) => {
     const data = await response.json();
     if(data.success){
       localStorage.setItem("token", data.authToken);
-      navigate('/');
       showAlert("You are logged in successfully","success");
+      navigate('/');
     }
     else{
       showAlert("Invalid credentials","danger");
@@ -47,6 +47,7 @@ export const Login = (props) => {
             aria-describedby="emailHelp"
             onChange={onChange}
             value={credentials.email}
+            required={true}
           />
           <div id="emailHelp" className="form-text">
             We'll never share your email with anyone else.
@@ -63,6 +64,7 @@ export const Login = (props) => {
             name="password"
             onChange={onChange}
             value={credentials.password}
+            required={true}
           />
         </div>
 
