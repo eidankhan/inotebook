@@ -5,11 +5,12 @@ import { AddNote } from "./AddNote";
 
 export const Notes = () => {
   const data = useContext(noteContext);
-  const { notes, fetchAllNotes } = data;
+  const { notes, fetchAllNotes, updateNote } = data;
 
-  const [note, setNote] = useState({editTitle:"", editDescription:"", editTag:"General"})
+  const [note, setNote] = useState({editTitle:"", editDescription:"", editTag:"General", id:""})
 
   const ref = useRef(null);
+  const refClose = useRef(null);
 
   useEffect(() => {
     fetchAllNotes();
@@ -17,7 +18,7 @@ export const Notes = () => {
 
   const currentNote = (currentNote) => {
     ref.current.click();
-    setNote({editTitle: currentNote.title, editDescription: currentNote.description, editTag: currentNote.tag})
+    setNote({editTitle: currentNote.title, editDescription: currentNote.description, editTag: currentNote.tag, id:currentNote._id})
   };
 
 
@@ -26,7 +27,8 @@ export const Notes = () => {
   }
   const handlOnClinck = (e) => {
       e.preventDefault();
-      console.log('Updating note:'+note);
+      updateNote(note.id, note.editTitle, note.editDescription, note.editTag)
+      refClose.current.click();
   }
 
   return (
@@ -109,6 +111,7 @@ export const Notes = () => {
               </div>
               <div className="modal-footer">
                 <button
+                  ref={refClose}
                   type="button"
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
