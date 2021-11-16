@@ -3,7 +3,8 @@ import noteContext from "../../context/notes/NoteContext";
 import { NoteItem } from "./NoteItem";
 import { AddNote } from "./AddNote";
 
-export const Notes = () => {
+export const Notes = (props) => {
+  const {showAlert} = props;
   const data = useContext(noteContext);
   const { notes, fetchAllNotes, updateNote } = data;
 
@@ -29,11 +30,12 @@ export const Notes = () => {
       e.preventDefault();
       updateNote(note.id, note.editTitle, note.editDescription, note.editTag)
       refClose.current.click();
+      showAlert("Updated note successfully", "success")
   }
 
   return (
     <div className="container">
-      <AddNote />
+      <AddNote showAlert={showAlert}/>
       <div>
         <button
           ref={ref}
@@ -133,7 +135,7 @@ export const Notes = () => {
           return (
             <div className="col-md-4 my-2" key={n._id}>
               {" "}
-              <NoteItem note={n} currentNote={currentNote} />{" "}
+              <NoteItem note={n} currentNote={currentNote} showAlert={showAlert} />{" "}
             </div>
           );
         })}
