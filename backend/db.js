@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-// Connect to local mongodb
-// const mongoURI = 'mongodb://localhost:27017/inotebook?readPreference=primary&appname=MongoDB%20Compass&ssl=false';
+// For local db
+// const MONGO_LOCAL_URI = require('./env')
 
-// Connect to remotely hosted db 
-const mongoURI = "mongodb+srv://eidancodez:khan@remotedb.ywdty.mongodb.net/iNotebook"
+// For remote db
+const MONGO_REMOTE_URI = require('./env')
 
 const connectToMongodb = () => {
-    mongoose.connect(mongoURI, () => {
+    mongoose.connect(MONGO_REMOTE_URI, () => {
         console.log('Connected to mongodb successfully.....!');
     })
 }
